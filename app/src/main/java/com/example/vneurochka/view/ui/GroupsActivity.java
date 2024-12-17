@@ -1,4 +1,4 @@
-package com.example.vneurochka.pages;
+package com.example.vneurochka.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,19 +19,13 @@ public class GroupsActivity extends AppCompatActivity {
         setContentView(R.layout.groups_activity);
         home = findViewById(R.id.home_btn);
         search = findViewById(R.id.search_btn);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupsActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(GroupsActivity.this, HomeActivity.class);
+            startActivity(intent);
         });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupsActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
+        search.setOnClickListener(v -> {
+            Intent intent = new Intent(GroupsActivity.this, SearchActivity.class);
+            startActivity(intent);
         });
     }
 }

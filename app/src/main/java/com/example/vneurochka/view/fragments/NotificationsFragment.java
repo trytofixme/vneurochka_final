@@ -1,4 +1,4 @@
-package com.example.vneurochka.ui.notifications;
+package com.example.vneurochka.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.vneurochka.databinding.FragmentNotificationsBinding;
+import com.example.vneurochka.viewModel.NotificationsViewModel;
 
 public class NotificationsFragment extends Fragment {
 

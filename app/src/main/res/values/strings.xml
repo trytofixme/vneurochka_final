@@ -4,10 +4,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="registration">Регистрация</string>
-    <string name="login">Введите логин</string>
+    <string name="login">Введите почту</string>
     <string name="password">Придумайте пароль</string>
     <string name="rpt_password">Повторите пароль</string>
-    <string name="e_mail">Введите вашу почту</string>
     <string name="btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="error_password_title">ОШИБКА В ПАРОЛЕ</string>
     <string name="error_password_text">Простите, измените пожалуйста пароль</string>

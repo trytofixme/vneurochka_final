@@ -1,4 +1,4 @@
-package com.example.vneurochka.ui.notifications;
+package com.example.vneurochka.viewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
