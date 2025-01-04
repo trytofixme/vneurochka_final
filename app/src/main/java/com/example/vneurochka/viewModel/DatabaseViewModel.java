@@ -16,9 +16,12 @@ public class DatabaseViewModel extends ViewModel {
     public LiveData<DataSnapshot> fetchSelectedProfileUserData;
     public LiveData<Boolean> successAddImageUrlInDatabase;
     public LiveData<Boolean> successAddUsernameInDatabase;
-    public LiveData<Boolean> successAddBioInDatabase;
     public LiveData<Boolean> successAddStatusInDatabase;
-    public LiveData<DatabaseReference> getTokenRefDb;
+    public LiveData<Boolean> successAddIsSeen;
+    public LiveData<DataSnapshot> getChaListUserDataSnapshot;
+    public LiveData<DataSnapshot> fetchedChat;
+    public LiveData<Boolean> successAddChatDb;
+    public LiveData<DataSnapshot> fetchSearchUser;
 
     public DatabaseViewModel()
     {
@@ -50,11 +53,6 @@ public class DatabaseViewModel extends ViewModel {
         successAddImageUrlInDatabase = instance.addImageUrlInDatabase(imageUrl, mUri);
     }
 
-    public void addBioInDatabase(String bio, Object bioUpdated)
-    {
-        successAddBioInDatabase = instance.addBioInDatabase(bio, bioUpdated);
-    }
-
     public void addUsernameInDatabase(String usernameUpdated, Object username)
     {
         successAddUsernameInDatabase = instance.addUsernameInDatabase(usernameUpdated, username);
@@ -65,9 +63,23 @@ public class DatabaseViewModel extends ViewModel {
         successAddStatusInDatabase = instance.addStatusInDatabase(statusUpdated, status);
     }
 
-    public void getTokenDatabaseRef()
-    {
-        getTokenRefDb = instance.getTokenRef();
+    public void addIsSeenInDatabase(String isSeen,DataSnapshot dataSnapshot){
+        successAddIsSeen = instance.addIsSeenInDatabase(isSeen,dataSnapshot);
     }
 
+    public void getChaListUserDataSnapshot(String currentUserId){
+        getChaListUserDataSnapshot = instance.getChatList(currentUserId);
+    }
+
+    public void fetchChatUser() {
+        fetchedChat = instance.fetchChatUser();
+    }
+
+    public void addChatDb(String receiverId,String senderId, String message, String timestamp) {
+        successAddChatDb = instance.addChatsInDatabase(receiverId, senderId, message, timestamp);
+    }
+
+    public void fetchSearchedUser(String searchQuery){
+        fetchSearchUser = instance.fetchSearchUser(searchQuery);
+    }
 }

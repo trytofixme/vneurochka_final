@@ -3,9 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="registration">Регистрация</string>
-    <string name="login">Введите почту</string>
-    <string name="password">Придумайте пароль</string>
     <string name="rpt_password">Повторите пароль</string>
     <string name="btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="error_password_title">ОШИБКА В ПАРОЛЕ</string>
@@ -20,4 +17,13 @@
     <string name="error_reg_title">ОШИБКЕ В ЛОГИНЕ ИЛИ ПАРОЛЕ</string>
     <string name="error_reg_text">Простите, проверьте логин и пароль, если вы не зарегестрированы, сделайте это!</string>
     <string name="error_reg_pb">Исправлюсь</string>
+
+    <string name="greeting">Добро пожаловать</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="authorize">ВОЙТИ</string>
+    <string name="new_user">Нет аккаунта?</string>
+    <string name="registration">Регистрация</string>
+    <string name="profile">Профиль пользователя</string>
+    <string name="search">Поиск</string>
 </resources>

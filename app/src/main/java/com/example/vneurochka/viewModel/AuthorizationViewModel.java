@@ -3,36 +3,34 @@ package com.example.vneurochka.viewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.vneurochka.services.repository.FirebaseAuthorizationHelper;
+import com.example.vneurochka.services.repository.FirebaseAuthorizationInstance;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthorizationViewModel extends ViewModel {
-
-    private final FirebaseAuthorizationHelper loginInstance;
-    public LiveData<Task> logInUser;
-    public LiveData<FirebaseUser> firebaseUserLoginStatus;
-    public LiveData<FirebaseAuth> firebaseAuthLiveData;
-
+    private final FirebaseAuthorizationInstance authorizationInstance;
+    public LiveData<Task> authorizationResult;
+    public LiveData<FirebaseUser> firebaseUser;
+    public LiveData<FirebaseAuth> firebaseAuth;
 
     public AuthorizationViewModel()
     {
-        loginInstance = new FirebaseAuthorizationHelper();
+        authorizationInstance = new FirebaseAuthorizationInstance();
     }
 
-    public void userLogIn(String emailLogIn, String pwdLogIn)
+    public void authorizeUser(String email, String password)
     {
-        logInUser = loginInstance.loginUser(emailLogIn, pwdLogIn);
+        authorizationResult = authorizationInstance.authorizeUser(email, password);
     }
 
-    public void getFirebaseUserLogInStatus()
+    public void getFirebaseUser()
     {
-        firebaseUserLoginStatus = loginInstance.getFirebaseUserLoginStatus();
+        firebaseUser = authorizationInstance.getFirebaseUser();
     }
 
     public void getFirebaseAuth()
     {
-        firebaseAuthLiveData = loginInstance.getFirebaseAuth();
+        firebaseAuth = authorizationInstance.getFirebaseAuth();
     }
 }
