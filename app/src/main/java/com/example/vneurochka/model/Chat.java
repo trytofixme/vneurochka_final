@@ -1,64 +1,61 @@
 package com.example.vneurochka.model;
 
-public class Chat {
-    private String receiverId;
-    private String senderId;
+public class Chat
+{
     private String message;
-    private String timestamp;
-    private boolean seen;
+    private int typing;
+    private long timestamp, seen;
 
-    public Chat(String receiverId, String senderId, String message,
-                String timestamp, boolean seen) {
-        this.receiverId = receiverId;
-        this.senderId = senderId;
+    public Chat()
+    {
+
+    }
+
+    public Chat(String message, int typing, long timestamp, long seen)
+    {
         this.message = message;
+        this.typing = typing;
         this.timestamp = timestamp;
         this.seen = seen;
     }
 
-    public Chat() {
-
-    }
-
-
-    public boolean getSeen() {
-        return seen;
-    }
-
-    public void setSeen(boolean seen) {
-        this.seen= seen;
-    }
-
-
-    public String getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getMessage() {
+    public String getMessage()
+    {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(String message)
+    {
         this.message = message;
     }
 
-    public String getTimestamp() {
+    public int getTyping()
+    {
+        return typing;
+    }
+
+    public void setTyping(int typing)
+    {
+        this.typing = typing;
+    }
+
+    public long getTimestamp()
+    {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp)
+    {
         this.timestamp = timestamp;
+    }
+
+    public long getSeen()
+    {
+        return seen;
+    }
+
+    public void setSeen(long seen)
+    {
+        this.seen = seen;
     }
 }

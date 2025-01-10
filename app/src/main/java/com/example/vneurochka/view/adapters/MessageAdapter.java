@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vneurochka.model.Chat;
 import com.example.vneurochka.R;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,22 +51,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
         Chat chats = chatArrayList.get(position);
         String message = chats.getMessage();
-        String timeStamp = chats.getTimestamp();
-        boolean isSeen = chats.getSeen();
-        long intTimeStamp = Long.parseLong(timeStamp);
-        String time_msg_received = timeStampConversionToTime(intTimeStamp);
+        long timeStamp = chats.getTimestamp();
+        long seen = chats.getSeen();
+        String time_msg_received = timeStampConversionToTime(timeStamp);
         holder.tv_time.setText(time_msg_received);
         holder.tv_msg.setText(message);
 
+
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         if (position == chatArrayList.size() - 1) {
-            if (isSeen) {
+            if (seen > 1) {
                 holder.tv_seen.setVisibility(View.VISIBLE);
-                String seen = "Seen";
-                holder.tv_seen.setText(seen);
+                holder.tv_seen.setText("Seen");
             } else {
                 holder.tv_seen.setVisibility(View.VISIBLE);
-                String delivered = "Delivered";
-                holder.tv_seen.setText(delivered);
+                holder.tv_seen.setText("Delivered");
             }
         } else {
             holder.tv_seen.setVisibility(View.GONE);
@@ -100,10 +100,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (chatArrayList.get(position).getReceiverId().equals(currentUser_sender)) {
-            return MSG_TYPE_LEFT_RECEIVED;
-        } else return MSG_TYPE_RIGHT_RECEIVED;
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+//        if (chatArrayList.get(position).getReceiverId().equals(currentUser_sender)) {
+//            return MSG_TYPE_LEFT_RECEIVED;
+//        } else return MSG_TYPE_RIGHT_RECEIVED;
+//    }
 }

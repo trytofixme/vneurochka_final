@@ -4,200 +4,172 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseAuth;
 
 import com.example.vneurochka.R;
-import com.example.vneurochka.viewModel.DatabaseViewModel;
-import com.example.vneurochka.viewModel.SignUpViewModel;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText et_password;
-    EditText et_repeat_password;
-    EditText et_email;
-    Button btn_signUp;
-    Context context;
-    SignUpViewModel signInViewModel;
-    DatabaseViewModel databaseViewModel;
-    FirebaseUser currentFirebaseUser;
+    private FirebaseAuth mAuth;
+    private DatabaseReference UsersRef;
+
+    private EditText UserEmail, UserLogin, UserPassword, UserRepeatPassword;
+    private TextView AlreadyHaveAccountLink;
+    Button SignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        init();
+
+        mAuth = FirebaseAuth.getInstance();
+        UsersRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        initControls();
         initListeners();
     }
 
-    private void init()
+    private void initControls()
     {
-        et_email = findViewById(R.id.e_mail);
-        et_password = findViewById(R.id.password); //Rezinka007
-        et_repeat_password = findViewById(R.id.rpt_password);
-        btn_signUp = findViewById(R.id.btn);
-        context = this;
-        signInViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication()))
-                .get(SignUpViewModel.class);
-        databaseViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication()))
-                .get(DatabaseViewModel.class);
+        UserEmail = findViewById(R.id.et_email_registration);
+        UserLogin = findViewById(R.id.et_login_registration);
+        UserPassword = findViewById(R.id.et_password_registration);
+        UserRepeatPassword = findViewById(R.id.et_rpt_password_registration);
+        SignUpButton = findViewById(R.id.btn_registration);
+        AlreadyHaveAccountLink = findViewById(R.id.tv_already_have_account_link);
     }
 
     private void initListeners()
     {
-        btn_signUp.setOnClickListener(new View.OnClickListener()
-        {
-            final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
+        AlreadyHaveAccountLink.setOnClickListener(view -> changeUserToAuthorizationActivity());
 
-            @Override
-            public void onClick(View v)
-            {
-                et_email.clearFocus();
-                et_password.clearFocus();
-                et_repeat_password.clearFocus();
-                v.startAnimation(buttonClick);
+        SignUpButton.setOnClickListener(v -> {
+            UserEmail.clearFocus();
+            UserLogin.clearFocus();
+            UserPassword.clearFocus();
+            UserRepeatPassword.clearFocus();
 
-                String passwordText = "Rezinka007";
-                String repeatPasswordText = "Rezinka007";
-                String emailText = "testmail@test.ru";
-
-                if (passwordText.isEmpty() && emailText.isEmpty() && repeatPasswordText.isEmpty())
-                {
-                    Toast.makeText(SignUpActivity.this, "Fields are empty!", Toast.LENGTH_SHORT).show();
-                    et_email.requestFocus();
-                } else if (emailText.isEmpty())
-                {
-                    et_email.setError("Please enter your Email.");
-                    et_email.requestFocus();
-                } else if (passwordText.isEmpty())
-                {
-                    et_password.setError("Please set your password.");
-                    et_password.requestFocus();
-                }
-                else if (Character.isDigit(emailText.charAt(0)))
-                {
-                    et_email.setError("The email cannot start with a digit.");
-                    et_email.requestFocus();
-                }
-                else if (emailText.length() < 4)
-                {
-                    et_email.setError("Email length from 5 characters.");
-                    et_email.requestFocus();
-                }
-                else if (Character.isDigit(passwordText.charAt(0)))
-                {
-                    et_password.setError("The password cannot start with a digit.");
-                    et_password.requestFocus();
-                }
-                else if (passwordText.length() < 7)
-                {
-                    et_password.setError("Password length from 8 characters.");
-                    et_password.requestFocus();
-                }
-                else if (!passwordText.equals(repeatPasswordText))
-                {
-                    et_password.setError("Passwords don't match!");
-                    et_password.requestFocus();
-                }
-                else
-                {
-                    et_email.setClickable(false);
-                    et_password.setClickable(false);
-                    et_repeat_password.setClickable(false);
-                    dismissKeyboard();
-                    trySignUp();
-                }
-            }
+            trySignUp();
         });
     }
 
     public void trySignUp()
     {
-        String passwordText = "Rezinka007";
-        String emailText = "testmail@test.ru";
+        String emailText = UserEmail.getText().toString();
+        String loginText = UserLogin.getText().toString();
+        String passwordText = UserPassword.getText().toString();
+        String repeatPasswordText = UserRepeatPassword.getText().toString();
 
-        signInViewModel.userSignUp(emailText, passwordText);
-        signInViewModel.signInUser.observe(this, task ->
+        if (emailText.isEmpty() && loginText.isEmpty() && passwordText.isEmpty() && repeatPasswordText.isEmpty())
         {
-            if (!task.isSuccessful())
+            Toast.makeText(SignUpActivity.this, "Все поля должны быть заполнены!", Toast.LENGTH_SHORT).show();
+            UserEmail.requestFocus();
+        } else if (emailText.isEmpty())
+        {
+            UserEmail.setError("Пожалуйста, введите ваш email.");
+            UserEmail.requestFocus();
+        } else if (passwordText.isEmpty())
+        {
+            UserPassword.setError("Пожалуйста, введите ваш пароль.");
+            UserPassword.requestFocus();
+        }
+        // Валидация почты
+        else if (Character.isDigit(emailText.charAt(0)))
+        {
+            UserEmail.setError("Почта не может начинаться с цифры.");
+            UserEmail.requestFocus();
+        }
+        else if (emailText.length() < 4)
+        {
+            UserEmail.setError("Длина почты должна быть от 5 символов.");
+            UserEmail.requestFocus();
+        }
+        // Валидация пароля
+        else if (Character.isDigit(passwordText.charAt(0)))
+        {
+            UserPassword.setError("Пароль не может начинаться с цифры.");
+            UserPassword.requestFocus();
+        }
+        else if (passwordText.length() < 7)
+        {
+            UserPassword.setError("Длина пароля должна быть от 8 символов.");
+            UserPassword.requestFocus();
+        }
+        else if (!passwordText.equals(repeatPasswordText))
+        {
+            UserPassword.setError("Пароли не совпадают!");
+            UserPassword.requestFocus();
+        }
+        else
+        {
+            UserEmail.setClickable(false);
+            UserLogin.setClickable(false);
+            UserPassword.setClickable(false);
+            UserRepeatPassword.setClickable(false);
+            dismissKeyboard();
+        }
+
+        mAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(task -> {
+            if(task.isSuccessful())
             {
-                et_email.setClickable(true);
-                et_password.setClickable(true);
-                et_repeat_password.setClickable(true);
+                String currentUserId = mAuth.getCurrentUser().getUid();
 
-                et_email.setText("");
-                et_password.setText("");
-                et_email.requestFocus();
+                Map<String, Object> map = new HashMap<>();
+                map.put("name", UserLogin.getText().toString());
+                //map.put("status", );
+                map.put("imageUrl", "default");
+                map.put("registrationDate", ServerValue.TIMESTAMP);
 
-                try {
-                    throw Objects.requireNonNull(task.getException());
-                } catch (FirebaseAuthUserCollisionException existEmail)
-                {
-                    Toast.makeText(context, "Email already exists.", Toast.LENGTH_SHORT).show();
-                } catch (FirebaseAuthWeakPasswordException weakPassword)
-                {
-                    Toast.makeText(context, "Password length should be more then six characters.", Toast.LENGTH_SHORT).show();
-                } catch (FirebaseAuthInvalidCredentialsException malformedEmail)
-                {
-                    Toast.makeText(context, "Invalid credentials, please try again.", Toast.LENGTH_SHORT).show();
-                } catch (Exception e)
-                {
-                    Toast.makeText(context, "SignUp unsuccessful. Try again.", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                getUserFirebaseSession();
-                addCurrentUserInDatabase(emailText);
-                Intent intent = new Intent(SignUpActivity.this, AuthorizationActivity.class);
-                startActivity(intent);
-                finish();
+                UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
+                    if(onCompleteTask.isSuccessful()) {
+                        changeUserToHomeActivity();
+                        Toast.makeText(SignUpActivity.this, "Аккаунт создан", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        String message = onCompleteTask.getException().toString();
+                        Toast.makeText(SignUpActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else
+            {
+                String message = task.getException().toString();
+                Toast.makeText(SignUpActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void dismissKeyboard()
+    private void dismissKeyboard()
     {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 
-    public void getUserFirebaseSession()
-    {
-        signInViewModel.getUserFirebaseSession();
-        signInViewModel.userFirebaseSession.observe(this, firebaseUser -> currentFirebaseUser = firebaseUser);
+    private void changeUserToHomeActivity() {
+        Intent mainIntent = new Intent(SignUpActivity.this, HomeActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 
-    private void addCurrentUserInDatabase(String email)
-    {
-        String registrationDate = Long.toString(System.currentTimeMillis());
-        String imageUrl = "default";
-        String userId = currentFirebaseUser.getUid();
-        databaseViewModel.addUserDatabase(userId, email, registrationDate, imageUrl);
-        databaseViewModel.successAddUserDb.observe(this, success ->
-        {
-            if (success)
-                Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-            else
-            {
-                Toast.makeText(context, "ERROR WHILE ADDING DATA IN DATABASE.", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void changeUserToAuthorizationActivity() {
+        Intent intent = new Intent(getBaseContext(), AuthorizationActivity.class);
+        startActivity(intent);
     }
 }

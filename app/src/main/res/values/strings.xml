@@ -3,27 +3,15 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="rpt_password">Повторите пароль</string>
-    <string name="btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
-    <string name="error_password_title">ОШИБКА В ПАРОЛЕ</string>
-    <string name="error_password_text">Простите, измените пожалуйста пароль</string>
-    <string name="error_password_pb">Исправлю</string>
-    <string name="error_login_title">ОШИБКА В ЛОГИНЕ</string>
-    <string name="error_login_text">Простите, измените пожалуйста логин</string>
-    <string name="error_login_pb">Исправлю</string>
-    <string name="error_rpt_title">ОШИБКА В ПАРОЛЯХ</string>
-    <string name="error_rpt_text">Простите, пароли не совпадают</string>
-    <string name="error_rpt_pb">Исправлю</string>
-    <string name="error_reg_title">ОШИБКЕ В ЛОГИНЕ ИЛИ ПАРОЛЕ</string>
-    <string name="error_reg_text">Простите, проверьте логин и пароль, если вы не зарегестрированы, сделайте это!</string>
-    <string name="error_reg_pb">Исправлюсь</string>
-
     <string name="greeting">Добро пожаловать</string>
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
+    <string name="rpt_password">Повторите пароль</string>
     <string name="authorize">ВОЙТИ</string>
     <string name="new_user">Нет аккаунта?</string>
     <string name="registration">Регистрация</string>
     <string name="profile">Профиль пользователя</string>
     <string name="search">Поиск</string>
+    <string name="login">Имя пользователя</string>
+    <string name="already_signed_up">Уже есть аккаунт ?</string>
 </resources>

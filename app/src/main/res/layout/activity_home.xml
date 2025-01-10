@@ -8,7 +8,7 @@
     >
 
     <ProgressBar
-        android:id="@+id/progress_bar_home"
+        android:id="@+id/home_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
@@ -20,32 +20,41 @@
         />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:background="@color/white">
 
             <ImageView
-                android:id="@+id/iv_user_image"
+                android:id="@+id/iv_home_user_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
                 android:clickable="true"
-                android:contentDescription="123"
+                android:contentDescription="TODO"
                 android:focusable="true"
-                android:padding="10dp"/>
+                android:padding="5dp"
+                android:src="@color/black"
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tv_display_name"
+                android:id="@+id/tv_home_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
+                android:layout_toEndOf="@+id/relativeLayout_message"
+                android:padding="2dp"
+                android:text="Имя пользователя"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
@@ -56,7 +65,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+                android:id="@+id/home_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"

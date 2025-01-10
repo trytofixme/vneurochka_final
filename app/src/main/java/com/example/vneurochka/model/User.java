@@ -1,18 +1,16 @@
 package com.example.vneurochka.model;
 
-import java.util.Date;
-
 public class User {
     private String id;
     private String email;
     private String displayName;
-    private Date registrationDate;
+    private long registrationDate;
     private String imageUrl;
     private String status;
 
     public User() {}
 
-    public User(String id, String email, String displayName, Date registrationDate, String imageUrl,
+    public User(String id, String email, String displayName, long registrationDate, String imageUrl,
                 String status) {
         this.id = id;
         this.email = email;
@@ -52,12 +50,12 @@ public class User {
         this.displayName = login;
     }
 
-    public Date getRegistrationDate()
+    public long getRegistrationDate()
     {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate)
+    public void setRegistrationDate(long registrationDate)
     {
         this.registrationDate = registrationDate;
     }

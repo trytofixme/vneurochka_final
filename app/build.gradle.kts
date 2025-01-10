@@ -47,10 +47,15 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.play.services.tasks)
-    implementation(libs.firebase.auth)
+    implementation(libs.firebase.ui.database)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
-    testImplementation(libs.junit)
+    implementation(libs.firebase.core)
+    implementation(libs.circleimageview)
+
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }

@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.UserFragment"
-
-    >
+    tools:context=".view.fragments.GroupsFragment">
 
     <EditText
         android:id="@+id/et_search"
@@ -27,8 +25,7 @@
         android:drawableEnd="@drawable/ic_baseline_search_24"/>
 
     <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/user_list_recycle_view"
+        android:id="@+id/groups_list_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/et_search"

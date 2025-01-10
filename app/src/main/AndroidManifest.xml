@@ -26,11 +26,9 @@
         <activity
             android:name=".view.ui.SignUpActivity"
             android:exported="false"/>
+
         <activity
             android:name=".view.ui.HomeActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".view.ui.GroupsActivity"
             android:exported="false"/>
 
         <meta-data

@@ -74,7 +74,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/et_login_email"
+                    android:id="@+id/et_email_auth"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
@@ -105,7 +105,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/et_login_password"
+                    android:id="@+id/et_password_auth"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginStart="25dp"
@@ -155,7 +155,7 @@
                         tools:ignore="NestedWeights" />
 
                     <Button
-                        android:id="@+id/btn_signup"
+                        android:id="@+id/btn_login_registration"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"

@@ -1,8 +1,8 @@
 package com.example.vneurochka.view.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,148 +10,188 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.vneurochka.R;
+import com.example.vneurochka.model.Group;
 import com.example.vneurochka.model.User;
-import com.example.vneurochka.view.adapters.ViewPagerAdapter;
-import com.example.vneurochka.view.fragments.ChatFragment;
-import com.example.vneurochka.view.fragments.UserFragment;
-import com.example.vneurochka.viewModel.AuthorizationViewModel;
+import com.example.vneurochka.services.FirebaseInstanceDatabase;
+import com.example.vneurochka.view.adapters.ViewPagerItemAdapter;
+import com.example.vneurochka.view.fragments.GroupsFragment;
 import com.example.vneurochka.viewModel.DatabaseViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
-    private AuthorizationViewModel authorizationViewModel;
+    private Toolbar toolbar;
+    private LinearLayout linearLayout;
+    private ProgressBar progressBar;
+    private TextView currentDisplayName;
+    private ImageView profileImage;
+    private ViewPagerItemAdapter viewPagerItemAdapter;
     private DatabaseViewModel databaseViewModel;
-
-    Toolbar toolbar;
-    LinearLayout linearLayout;
-    ProgressBar progressBar;
-    TextView currentDisplayName;
-    ImageView profileImage;
-    String username;
-    String imageUrl;
-
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    ViewPagerAdapter viewPagerAdapter;
+    private List<Group> userGroupList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        init();
-        fetchCurrentUserdata();
-        setupPagerFragment();
+        initControls();
+        initListeners();
         onOptionMenuClicked();
+        setupViewPager();
     }
 
-    private void setupPagerFragment() {
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), ViewPagerAdapter.POSITION_UNCHANGED);
-        viewPagerAdapter.addFragment(new ChatFragment(this), "Chats");
-        viewPagerAdapter.addFragment(new UserFragment(this), "Groups");
+    @Override
+    public void onStart()
+    {
+        super.onStart();
 
-        viewPager.setAdapter(viewPagerAdapter);
-
-        tabLayout.setupWithViewPager(viewPager);
-
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+        {
+            Intent authorizationIntent = new Intent(HomeActivity.this, AuthorizationActivity.class);
+            startActivity(authorizationIntent);
+            finish();
+        }
     }
 
-    private void fetchCurrentUserdata() {
-        databaseViewModel.fetchingUserDataCurrent();
-        databaseViewModel.fetchUserCurrentData.observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    progressBar.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
-                    username = user.getDisplayName();
-                    imageUrl = user.getImageUrl();
-                    //  Toast.makeText(HomeActivity.this, "Welcome back " + username + ".", Toast.LENGTH_SHORT).show();
-                    currentDisplayName.setText(username);
-                    if (imageUrl.equals("default")) {
-                        profileImage.setImageResource(R.drawable.sample_img);
-                    } else {
-                        //Glide.with(getApplicationContext()).load(imageUrl).into(profileImage);
-                    }
-                } else {
-                    Toast.makeText(HomeActivity.this, "User not found..", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null)
+        {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("status").setValue("online");
+        }
     }
 
-    private void getUserAuthToSignOut() {
-        authorizationViewModel.getFirebaseAuth();
-        authorizationViewModel.firebaseAuth.observe(this, new Observer<FirebaseAuth>() {
-            @Override
-            public void onChanged(FirebaseAuth firebaseAuth) {
-                firebaseAuth.signOut();
-                Intent intent = new Intent(HomeActivity.this, AuthorizationActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null)
+        {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("status").setValue("offline");
+        }
     }
 
-    public void onOptionMenuClicked() {
-        toolbar.inflateMenu(R.menu.logout);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.log_out_home) {
-                    getUserAuthToSignOut();
-                    Toast.makeText(HomeActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-        });
-    }
-
-    private void init() {
-        authorizationViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication()))
-                .get(AuthorizationViewModel.class);
-
-        toolbar = findViewById(R.id.toolbar);
+    private void initControls() {
+        currentDisplayName = findViewById(R.id.tv_home_user_name);
+        profileImage = findViewById(R.id.iv_home_user_image);
+        linearLayout = findViewById(R.id.home_layout);
+        progressBar = findViewById(R.id.home_progress_bar);
+        toolbar = findViewById(R.id.home_toolbar);
 
         databaseViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()))
                 .get(DatabaseViewModel.class);
 
-        viewPager = findViewById(R.id.view_pager);
-        currentDisplayName = findViewById(R.id.tv_display_name);
-        profileImage = findViewById(R.id.iv_user_image);
-        linearLayout = findViewById(R.id.linearLayout);
-        progressBar = findViewById(R.id.progress_bar_home);
-        tabLayout = findViewById(R.id.tab_layout);
-
+//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        databaseViewModel.fetchUserGroups(currentUserId);
+//        userGroupList = databaseViewModel.getUsers();
     }
 
-    private void changeStatus(String status){
-        databaseViewModel.addStatusInDatabase("status", status);
+    private void initListeners() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId);
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    linearLayout.setVisibility(View.VISIBLE);
+
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String imageUrl = dataSnapshot.child("imageUrl").getValue().toString();
+                    currentDisplayName.setText(name);
+                    if (imageUrl.equals("default")) {
+                        profileImage.setImageResource(R.drawable.sample_img);
+                    } else {
+                        // ДОБАВИТЬ ЗАГРУЗКУ ИЗОБРАЖЕНИЕ В ПРЕДСТАВЛЕНИЕ ПО ССЫЛКЕ
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(HomeActivity.this, "Пользователь не найден!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw new RuntimeException(databaseError.getMessage());
+            }
+        };
+        userDatabase.addValueEventListener(userListener);
+
+        DatabaseReference groupsDatabase = FirebaseDatabase.getInstance().getReference("Groups");
+        //groupsDatabase.keepSynced(true);
+        groupsDatabase.addValueEventListener(
+            new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    GenericTypeIndicator<HashMap<String, Group>> indicatorGroups = new GenericTypeIndicator<HashMap<String, Group>>() {};
+                    Collection<Group> groupList = snapshot.getValue(indicatorGroups).values();
+                    if (groupList == null) {
+                        return;
+                    }
+
+                    for (Group group: groupList) {
+                        List<String> userList = group.getUsers();
+
+                        if (userList != null && userList.contains(currentUserId)) {
+                            userGroupList.add(group);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        changeStatus("online");
+    public void onOptionMenuClicked() {
+        toolbar.inflateMenu(R.menu.logout);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.log_out_home) {
+                // РЕАЛИЗОВАТЬ ВЫХОД ИЗ АККАУНТА
+                Toast.makeText(HomeActivity.this, "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        changeStatus("offline");
+    private void setupViewPager() {
+        viewPagerItemAdapter = new ViewPagerItemAdapter(getSupportFragmentManager());
+        //fragmentPagerItemAdapter.addFragment(new ProfileFragment(this), "Профиль");
+        viewPagerItemAdapter.addFragment(new GroupsFragment(userGroupList), "Мои группы");
+
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(viewPagerItemAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.home_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

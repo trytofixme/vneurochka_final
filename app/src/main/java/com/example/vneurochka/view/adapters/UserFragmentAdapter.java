@@ -1,7 +1,6 @@
 package com.example.vneurochka.view.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vneurochka.R;
 import com.example.vneurochka.model.User;
 import com.example.vneurochka.view.fragments.BottomSheetProfileDetailUser;
-import com.example.vneurochka.view.ui.MessageActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,14 +79,14 @@ public class UserFragmentAdapter extends RecyclerView.Adapter<UserFragmentAdapte
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("userid", users.getId());
-                context.startActivity(intent);
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, MessageActivity.class);
+//                intent.putExtra("userid", users.getId());
+//                context.startActivity(intent);
+//            }
+//        });
 
 
     }
