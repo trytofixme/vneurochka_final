@@ -14,7 +14,7 @@ import com.example.vneurochka.model.Group;
 import java.util.List;
 
 public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupHolder> {
-    private final List<Group> groupList;
+    private List<Group> groupList;
 
     public GroupFragmentAdapter(List<Group> groupList) {
         this.groupList = groupList;
@@ -24,7 +24,7 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupHolder> {
     @Override
     public GroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.group_view_cpy, parent, false);
+                .inflate(R.layout.group_view, parent, false);
 
         return new GroupHolder(view);
     }
@@ -46,5 +46,9 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupHolder> {
     @Override
     public int getItemCount() {
         return groupList.size();
+    }
+
+    public void setItems(List<Group> groupList) {
+        this.groupList = groupList;
     }
 }

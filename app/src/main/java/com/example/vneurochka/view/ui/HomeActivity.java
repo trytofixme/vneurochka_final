@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView profileImage;
     private ViewPagerItemAdapter viewPagerItemAdapter;
     private DatabaseViewModel databaseViewModel;
-    private List<Group> userGroupList = new ArrayList<>();
+    private final List<Group> userGroupList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,32 +142,7 @@ public class HomeActivity extends AppCompatActivity {
         };
         userDatabase.addValueEventListener(userListener);
 
-        DatabaseReference groupsDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-        //groupsDatabase.keepSynced(true);
-        groupsDatabase.addValueEventListener(
-            new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    GenericTypeIndicator<HashMap<String, Group>> indicatorGroups = new GenericTypeIndicator<HashMap<String, Group>>() {};
-                    Collection<Group> groupList = snapshot.getValue(indicatorGroups).values();
-                    if (groupList == null) {
-                        return;
-                    }
 
-                    for (Group group: groupList) {
-                        List<String> userList = group.getUsers();
-
-                        if (userList != null && userList.contains(currentUserId)) {
-                            userGroupList.add(group);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
     }
 
     public void onOptionMenuClicked() {
@@ -186,7 +161,9 @@ public class HomeActivity extends AppCompatActivity {
     private void setupViewPager() {
         viewPagerItemAdapter = new ViewPagerItemAdapter(getSupportFragmentManager());
         //fragmentPagerItemAdapter.addFragment(new ProfileFragment(this), "Профиль");
-        viewPagerItemAdapter.addFragment(new GroupsFragment(userGroupList), "Мои группы");
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseViewModel.fetchUserGroups(currentUserId);
+        viewPagerItemAdapter.addFragment(new GroupsFragment(), "Мои группы");
 
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(viewPagerItemAdapter);

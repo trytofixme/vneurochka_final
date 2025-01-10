@@ -1,9 +1,5 @@
 package com.example.vneurochka.model;
 
-import com.google.firebase.database.GenericTypeIndicator;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Group {
@@ -11,7 +7,7 @@ public class Group {
     private String description;
     private long creationDate;
     private String imageUrl;
-    private List<String> users;
+    private List<String> userIds;
 
     public Group() {}
 
@@ -62,11 +58,11 @@ public class Group {
         this.imageUrl = imageUrl;
     }
 
-    public void setUsers(List<String> users) {
-        this.users = users;
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 
-    public List<String> getUsers() {
-        return this.users;
+    public List<String> getUserIds() {
+        return this.userIds;
     }
 }

@@ -2,7 +2,6 @@ package com.example.vneurochka.viewModel;
 
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.vneurochka.model.Group;
@@ -38,7 +37,7 @@ public class DatabaseViewModel extends ViewModel {
                         }
 
                         for (Group group: groupList) {
-                            List<String> userList = group.getUsers();
+                            List<String> userList = group.getUserIds();
 
                             if (userList != null && userList.contains(currentUserId)) {
                                 userGroupList.add(group);
@@ -53,8 +52,8 @@ public class DatabaseViewModel extends ViewModel {
                 });
     }
 
+
     public List<Group> getUsers() {
         return this.userGroupList;
     }
-
 }
