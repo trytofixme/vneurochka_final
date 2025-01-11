@@ -3,6 +3,7 @@ package com.example.vneurochka.model;
 import java.util.Date;
 
 public class User {
+    private String login;
     private String id;
     private String email;
     private String displayName;
@@ -12,15 +13,19 @@ public class User {
 
     public User() {}
 
-    public User(String id, String email, String displayName, Date registrationDate, String imageUrl,
-                String status) {
+    public User(String login, String id, String email, String displayName, Date registrationDate, String imageUrl, String status) {
         this.id = id;
+        this.login = login;
         this.email = email;
         this.displayName = displayName;
         this.registrationDate = registrationDate;
         this.imageUrl = imageUrl;
         this.status = status;
     }
+
+    public String getLogin(){return login;}
+
+    public void setLogin(String login){this.login = login;}
 
     public String getId()
     {

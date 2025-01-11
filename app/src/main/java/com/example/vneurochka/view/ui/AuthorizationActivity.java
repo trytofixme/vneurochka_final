@@ -3,6 +3,7 @@ package com.example.vneurochka.view.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_authorization);
         init();
         getCurrentUserSession();
@@ -54,11 +56,11 @@ public class AuthorizationActivity extends AppCompatActivity {
                 try {
                     throw Objects.requireNonNull(task.getException());
                 } catch (FirebaseAuthInvalidUserException invalidEmail) {
-                    Toast.makeText(AuthorizationActivity.this, "Недостаточно полномочий, попробуйте снова.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthorizationActivity.this, getText(R.string.no_authority_auth), Toast.LENGTH_SHORT).show();
                 } catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
-                    Toast.makeText(AuthorizationActivity.this, "Неверная почта или пароль, попробуйте снова.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthorizationActivity.this, getText(R.string.wrong_fill_auth), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(AuthorizationActivity.this, "Ошибка авторизации, проверьте интернет соединение.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthorizationActivity.this, getText(R.string.no_connection_auth), Toast.LENGTH_SHORT).show();
                 }
             } else {
 
@@ -79,7 +81,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     private void init()
     {
         et_email = findViewById(R.id.et_login_email);
-        et_password = findViewById(R.id.password);
+        et_password = findViewById(R.id.et_login_password);
         btn_login = findViewById(R.id.btn_login);
         btn_signup = findViewById(R.id.btn_signup);
         authorizationViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
@@ -100,14 +102,13 @@ public class AuthorizationActivity extends AppCompatActivity {
             String passwordText = "Rezinka007";
 
             if ((mailText.isEmpty() && passwordText.isEmpty())) {
-                Toast.makeText(AuthorizationActivity.this, "Почта и пароль должны быть заполнены!"
-                        , Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthorizationActivity.this, getText(R.string.no_fills_auth), Toast.LENGTH_SHORT).show();
                 et_email.requestFocus();
             } else if (mailText.isEmpty()) {
-                et_email.setError("Пожалуйста, введите ваш email.");
+                et_email.setError(getText(R.string.no_email_auth));
                 et_email.requestFocus();
             } else if (passwordText.isEmpty()) {
-                et_password.setError("Пожалуйста, введите ваш пароль.");
+                et_password.setError(getText(R.string.no_ps_auth));
                 et_password.requestFocus();
             } else {
                 et_email.setClickable(false);

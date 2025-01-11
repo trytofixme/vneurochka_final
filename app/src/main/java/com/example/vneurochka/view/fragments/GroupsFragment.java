@@ -2,12 +2,6 @@ package com.example.vneurochka.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -15,6 +9,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.vneurochka.R;
 import com.example.vneurochka.model.User;
@@ -24,16 +25,18 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 
-public class UserFragment extends Fragment {
+
+public class GroupsFragment extends Fragment {
+
     private Context context;
     private DatabaseViewModel databaseViewModel;
-    private ArrayList<User> mUSer;
+    private ArrayList<User> mGroup;
     private String currentUserId;
     private RecyclerView recyclerView;
     private UserFragmentAdapter userFragmentAdapter;
     EditText et_search;
 
-    public UserFragment(Context context) {
+    public GroupsFragment(Context context) {
         this.context = context;
     }
 
@@ -42,13 +45,13 @@ public class UserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         init(view);
-        fetchingAllUserNAme();
+        fetchingAllGroupName();
         return view;
     }
 
 
 
-    private void fetchingAllUserNAme() {
+    private void fetchingAllGroupName() {
         databaseViewModel.fetchingUserDataCurrent();
         databaseViewModel.fetchUserCurrentData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
             @Override
@@ -64,7 +67,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onChanged(DataSnapshot dataSnapshot) {
                 if (et_search.getText().toString().equals("")) {
-                    mUSer.clear();
+                    mGroup.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
 
@@ -72,11 +75,11 @@ public class UserFragment extends Fragment {
                         if (!(user.getEmail() == null)
                         ) {
                             if (!currentUserId.equals(user.getId())) {
-                                mUSer.add(user);
+                                mGroup.add(user);
 
                             }
                         }
-                        userFragmentAdapter = new UserFragmentAdapter(mUSer, context, false);
+                        userFragmentAdapter = new UserFragmentAdapter(mGroup, context, false);
                         recyclerView.setAdapter(userFragmentAdapter);
 
                     }
@@ -95,7 +98,7 @@ public class UserFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        mUSer = new ArrayList<>();
+        mGroup = new ArrayList<>();
         et_search = view.findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -105,7 +108,7 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    searchUsers(s.toString().toLowerCase());
+                searchUsers(s.toString().toLowerCase());
             }
 
             @Override
@@ -124,22 +127,22 @@ public class UserFragment extends Fragment {
             databaseViewModel.fetchSearchUser.observe(this, new Observer<DataSnapshot>() {
                 @Override
                 public void onChanged(DataSnapshot dataSnapshot) {
-                    mUSer.clear();
+                    mGroup.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User users = snapshot.getValue(User.class);
                         assert users != null;
                         if (!users.getId().equals(currentUserId)) {
-                            mUSer.add(users);
+                            mGroup.add(users);
                         }
 
                     }
-                    userFragmentAdapter = new UserFragmentAdapter(mUSer, context, false);
+                    userFragmentAdapter = new UserFragmentAdapter(mGroup, context, false);
                     recyclerView.setAdapter(userFragmentAdapter);
 
                 }
             });
         } else {
-            fetchingAllUserNAme();
+            fetchingAllGroupName();
         }
     }
 }

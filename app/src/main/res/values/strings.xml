@@ -1,23 +1,22 @@
 <resources>
+    <string name="no_authority_auth">Недостаточно полномочий, попробуйте снова.</string>
+    <string name="wrong_fill_auth">Неверная почта или пароль, попробуйте снова.</string>
+    <string name="no_connection_auth">Ошибка авторизации, проверьте интернет соединение.</string>
+    <string name="no_fills_auth">Почта и пароль должны быть заполнены!</string>
+    <string name="no_email_auth">Пожалуйста, введите ваш email.</string>
+    <string name="no_fills_reg">Поля пустые!</string>
+    <string name="no_ps_auth">Пожалуйста, введите ваш пароль.</string>
     <string name="app_name">Внеурочка</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="rpt_password">Повторите пароль</string>
-    <string name="btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
-    <string name="error_password_title">ОШИБКА В ПАРОЛЕ</string>
-    <string name="error_password_text">Простите, измените пожалуйста пароль</string>
-    <string name="error_password_pb">Исправлю</string>
-    <string name="error_login_title">ОШИБКА В ЛОГИНЕ</string>
-    <string name="error_login_text">Простите, измените пожалуйста логин</string>
-    <string name="error_login_pb">Исправлю</string>
-    <string name="error_rpt_title">ОШИБКА В ПАРОЛЯХ</string>
-    <string name="error_rpt_text">Простите, пароли не совпадают</string>
-    <string name="error_rpt_pb">Исправлю</string>
-    <string name="error_reg_title">ОШИБКЕ В ЛОГИНЕ ИЛИ ПАРОЛЕ</string>
-    <string name="error_reg_text">Простите, проверьте логин и пароль, если вы не зарегестрированы, сделайте это!</string>
-    <string name="error_reg_pb">Исправлюсь</string>
-
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
+    <string name="reg_login">Придумайте логин</string>
+    <string name="reg_email">Вставьте свою почту</string>
+    <string name="reg_ps">Придумайте пароль</string>
+    <string name="reg_rpt_ps">Повторите пароль</string>
+    <string name="regged_textView">Уже есть аккаунт?</string>
+    <string name="regged_btn">ВОЙТИ В АККАУНТ</string>
     <string name="greeting">Добро пожаловать</string>
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
@@ -26,4 +25,7 @@
     <string name="registration">Регистрация</string>
     <string name="profile">Профиль пользователя</string>
     <string name="search">Поиск</string>
+    <string name="no_login_reg">Пожалуйста придумайте логин</string>
+    <string name="no_email_reg">Пожалуйста вставьте свою почту</string>
+    <string name="no_ps_reg">Пожалуйста придумайте пароль</string>
 </resources>
