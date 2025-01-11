@@ -6,10 +6,11 @@
     tools:context=".view.fragments.GroupsFragment">
 
     <EditText
-        android:id="@+id/et_search"
+        android:id="@+id/et_group_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="15dp"
+        android:autofillHints=""
         android:maxLines="1"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
@@ -28,7 +29,7 @@
         android:id="@+id/groups_list_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/et_search"
+        android:layout_below="@id/et_group_search"
         android:layout_marginTop="10dp"/>
 
 </RelativeLayout>
