@@ -76,42 +76,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (emailText.isEmpty() && loginText.isEmpty() && passwordText.isEmpty() && repeatPasswordText.isEmpty())
         {
-            Toast.makeText(SignUpActivity.this, "Все поля должны быть заполнены!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, "??? ???? ?????? ???? ?????????!", Toast.LENGTH_SHORT).show();
             UserEmail.requestFocus();
         } else if (emailText.isEmpty())
         {
-            UserEmail.setError("Пожалуйста, введите ваш email.");
+            UserEmail.setError("??????????, ??????? ??? email.");
             UserEmail.requestFocus();
         } else if (passwordText.isEmpty())
         {
-            UserPassword.setError("Пожалуйста, введите ваш пароль.");
+            UserPassword.setError("??????????, ??????? ??? ??????.");
             UserPassword.requestFocus();
         }
-        // Валидация почты
+        // ????????? ?????
         else if (Character.isDigit(emailText.charAt(0)))
         {
-            UserEmail.setError("Почта не может начинаться с цифры.");
+            UserEmail.setError("????? ?? ????? ?????????? ? ?????.");
             UserEmail.requestFocus();
         }
         else if (emailText.length() < 4)
         {
-            UserEmail.setError("Длина почты должна быть от 5 символов.");
+            UserEmail.setError("????? ????? ?????? ???? ?? 5 ????????.");
             UserEmail.requestFocus();
         }
-        // Валидация пароля
+        // ????????? ??????
         else if (Character.isDigit(passwordText.charAt(0)))
         {
-            UserPassword.setError("Пароль не может начинаться с цифры.");
+            UserPassword.setError("?????? ?? ????? ?????????? ? ?????.");
             UserPassword.requestFocus();
         }
         else if (passwordText.length() < 7)
         {
-            UserPassword.setError("Длина пароля должна быть от 8 символов.");
+            UserPassword.setError("????? ?????? ?????? ???? ?? 8 ????????.");
             UserPassword.requestFocus();
         }
         else if (!passwordText.equals(repeatPasswordText))
         {
-            UserPassword.setError("Пароли не совпадают!");
+            UserPassword.setError("?????? ?? ?????????!");
             UserPassword.requestFocus();
         }
         else
@@ -137,19 +137,19 @@ public class SignUpActivity extends AppCompatActivity {
                 UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
                     if(onCompleteTask.isSuccessful()) {
                         changeUserToHomeActivity();
-                        Toast.makeText(SignUpActivity.this, "Аккаунт создан", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "??????? ??????", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
                         String message = onCompleteTask.getException().toString();
-                        Toast.makeText(SignUpActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
             else
             {
                 String message = task.getException().toString();
-                Toast.makeText(SignUpActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
             }
         });
     }

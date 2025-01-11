@@ -27,9 +27,11 @@ public class AuthorizationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_authorization);
-        firebaseAuth = FirebaseAuth.getInstance();
+		firebaseAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
+    }
 
         initializeControls();
         initializeListeners();
@@ -73,13 +75,13 @@ public class AuthorizationActivity extends AppCompatActivity {
         String passwordText = UserPassword.getText().toString();
 
         if ((mailText.isEmpty() && passwordText.isEmpty())) {
-            Toast.makeText(AuthorizationActivity.this, "Почта и пароль должны быть заполнены!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AuthorizationActivity.this, "????? ? ?????? ?????? ???? ?????????!", Toast.LENGTH_SHORT).show();
             UserEmail.requestFocus();
         } else if (mailText.isEmpty()) {
-            UserEmail.setError("Пожалуйста, введите ваш email.");
+            UserEmail.setError("??????????, ??????? ??? email.");
             UserEmail.requestFocus();
         } else if (passwordText.isEmpty()) {
-            UserPassword.setError("Пожалуйста, введите ваш пароль.");
+            UserPassword.setError("??????????, ??????? ??? ??????.");
             UserPassword.requestFocus();
         } else {
             UserEmail.setClickable(false);
@@ -95,7 +97,7 @@ public class AuthorizationActivity extends AppCompatActivity {
                         UserRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(userTask -> {
                             if(userTask.isSuccessful()) {
                                 changeUserToHomeActivity();
-                                Toast.makeText(AuthorizationActivity.this, "Авторизация прошла успешно...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AuthorizationActivity.this, "??????????? ?????? ???????...", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -103,7 +105,7 @@ public class AuthorizationActivity extends AppCompatActivity {
             }
             else {
                 String message = task.getException().toString();
-                Toast.makeText(AuthorizationActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthorizationActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
             }
         });
     }

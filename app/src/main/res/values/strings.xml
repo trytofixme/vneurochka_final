@@ -1,17 +1,31 @@
 <resources>
+    <string name="no_authority_auth">Недостаточно полномочий, попробуйте снова.</string>
+    <string name="wrong_fill_auth">Неверная почта или пароль, попробуйте снова.</string>
+    <string name="no_connection_auth">Ошибка авторизации, проверьте интернет соединение.</string>
+    <string name="no_fills_auth">Почта и пароль должны быть заполнены!</string>
+    <string name="no_email_auth">Пожалуйста, введите ваш email.</string>
+    <string name="no_fills_reg">Поля пустые!</string>
+    <string name="no_ps_auth">Пожалуйста, введите ваш пароль.</string>
     <string name="app_name">Внеурочка</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
+    <string name="reg_login">Придумайте логин</string>
+    <string name="reg_email">Вставьте свою почту</string>
+    <string name="reg_ps">Придумайте пароль</string>
+    <string name="rpt_password">Повторите пароль</string>
+    <string name="regged_textView">Уже есть аккаунт?</string>
+    <string name="regged_btn">ВОЙТИ В АККАУНТ</string>
     <string name="greeting">Добро пожаловать</string>
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
-    <string name="rpt_password">Повторите пароль</string>
     <string name="authorize">ВОЙТИ</string>
     <string name="new_user">Нет аккаунта?</string>
     <string name="registration">Регистрация</string>
     <string name="profile">Профиль пользователя</string>
     <string name="search">Поиск</string>
-    <string name="login">Имя пользователя</string>
-    <string name="already_signed_up">Уже есть аккаунт ?</string>
+    <string name="no_login_reg">Пожалуйста придумайте логин</string>
+    <string name="no_email_reg">Пожалуйста вставьте свою почту</string>
+    <string name="no_ps_reg">Пожалуйста придумайте пароль</string>
 </resources>
