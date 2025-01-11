@@ -12,9 +12,11 @@
     <string name="reg_login">Imagine login</string>
     <string name="reg_email">Fill in your e-mail</string>
     <string name="reg_ps">Imagine password</string>
-    <string name="reg_rpt_ps">Repeat password</string>
+    <string name="rpt_password">Repeat password</string>
     <string name="regged_textView">Already have an account?</string>
     <string name="regged_btn">SIGN IN</string>
+    <string name="login">Username</string>
+    <string name="already_signed_up">Already signed up?</string>
     <string name="greeting">Welcome</string>
     <string name="email">E-mail</string>
     <string name="password">Password</string>

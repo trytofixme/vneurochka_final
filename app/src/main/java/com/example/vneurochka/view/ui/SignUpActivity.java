@@ -130,9 +130,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Map<String, Object> map = new HashMap<>();
                 map.put("name", UserLogin.getText().toString());
-                //map.put("status", );
+                map.put("status", "online");
                 map.put("imageUrl", "default");
-                map.put("registrationDate", ServerValue.TIMESTAMP);
 
                 UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
                     if(onCompleteTask.isSuccessful()) {

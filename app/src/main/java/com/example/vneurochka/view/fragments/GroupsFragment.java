@@ -71,6 +71,8 @@ public class GroupsFragment extends Fragment {
                     et_search.setText("");
             }
         });
+
+        //et_search.setOnClickListener(view1 -> searchGroups(""));
     }
 
     private void initUserGroups() {
@@ -81,6 +83,7 @@ public class GroupsFragment extends Fragment {
             new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userGroupList.clear();
                     GenericTypeIndicator<HashMap<String, Group>> indicatorGroups = new GenericTypeIndicator<HashMap<String, Group>>() {};
                     HashMap<String, Group> groupHashMap = snapshot.getValue(indicatorGroups);
                     if (groupHashMap == null) {
@@ -125,9 +128,14 @@ public class GroupsFragment extends Fragment {
 
     private void searchGroups(String searchText) {
         ArrayList<Group> requestedGroups = new ArrayList<>();
-        for (Group group : groupList) {
-            if (group.getName().contains(searchText)) {
-                requestedGroups.add(group);
+        if (searchText.isEmpty()) {
+            requestedGroups = (ArrayList<Group>) userGroupList;
+        }
+        else {
+            for (Group group : userGroupList) {
+                if (group.getName().contains(searchText)) {
+                    requestedGroups.add(group);
+                }
             }
         }
 

@@ -1,0 +1,51 @@
+{
+  "Groups": {
+    "hiJsqTvFaEgbISZ6TvSfr4PM1133": {
+      "creationDate": 1736434120098,
+      "description": "Третья группа для тестирования",
+      "imageUrl": "default",
+      "name": "Тестовая группа 3",
+      "userIds": [
+        "riJsqTvFaEgbISZ6TvSfr4PM4o33"
+      ]
+    },
+    "hiJsqTvFaEgbISZ6TvSfr4PM4133": {
+      "creationDate": 1736434120096,
+      "description": "Вторая группа для тестирования",
+      "imageUrl": "default",
+      "name": "Тестовая группа 2",
+      "userIds": [
+        "riJsqTvFaEgbISZ6TvSfr4PM4o33",
+        "it2V72lXaVUnH58coH5MnpPnv3j2"
+      ]
+    },
+    "riJsqTvFaEgbISZ6TvSfr4PM4133": {
+      "creationDate": 1736434120094,
+      "description": "Первая группа для тестирования",
+      "imageUrl": "default",
+      "name": "Тестовая группа 1",
+      "userIds": [
+        "riJsqTvFaEgbISZ6TvSfr4PM4o33",
+        "it2V72lXaVUnH58coH5MnpPnv3j2"
+      ]
+    }
+  },
+  "Users": {
+    "it2V72lXaVUnH58coH5MnpPnv3j2": {
+      "device_Token": {
+        "canceled": false,
+        "complete": true,
+        "result": "eNE_HqrGTvSzELXZxfvqDy:APA91bFD_Fv0TQvFvG1-I5TgA_9PlSsBTunKy3V2q9iNq07aI8f1WHzQ0bhoMp_dPWviCspvFEHLh_XO8sB9cWjN-c7sqVZdeM-wfxVmhc6bf6gnKKBnSRo",
+        "successful": true
+      },
+      "imageUrl": "default",
+      "name": "Test User 2",
+      "status": "online"
+    },
+    "riJsqTvFaEgbISZ6TvSfr4PM4o33": {
+      "imageUrl": "default",
+      "name": "Тестовый пользователь",
+      "status": "online"
+    }
+  }
+}

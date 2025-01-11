@@ -2,7 +2,9 @@ package com.example.vneurochka.view.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Locale;
+
 public class AuthorizationActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Button LoginButton, SignUpButton;
@@ -29,10 +33,9 @@ public class AuthorizationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_authorization);
+        setLanguageForApp("ru");
 		firebaseAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-    }
-
         initializeControls();
         initializeListeners();
     }
@@ -127,5 +130,20 @@ public class AuthorizationActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private void setLanguageForApp(String languageToLoad){
+        Locale locale;
+        if (languageToLoad.equals("not-set")) {
+            locale = Locale.getDefault();
+        }
+        else {
+            locale = new Locale(languageToLoad);
+        }
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
     }
 }

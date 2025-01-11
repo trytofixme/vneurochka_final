@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_authority_auth" />
+    <string name="no_authority_auth">Недостаточно полномочий, попробуйте снова.</string>
     <string name="wrong_fill_auth">Неверная почта или пароль, попробуйте снова.</string>
     <string name="no_connection_auth">Ошибка авторизации, проверьте интернет соединение.</string>
     <string name="no_fills_auth">Почта и пароль должны быть заполнены!</string>
