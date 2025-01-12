@@ -1,23 +1,31 @@
 package com.example.vneurochka.view.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vneurochka.R;
-import com.example.vneurochka.holders.GroupHolder;
 import com.example.vneurochka.model.Group;
+import com.example.vneurochka.view.ui.ChatActivity;
 
 import java.util.List;
+import java.util.Objects;
 
-public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupHolder> {
-    private List<Group> groupList;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    public GroupFragmentAdapter(List<Group> groupList) {
-        this.groupList = groupList;
+public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdapter.GroupHolder> {
+    private static List<Group> groupList;
+    private static Context context;
+
+    public GroupFragmentAdapter(List<Group> groupList, Context context) {
+        GroupFragmentAdapter.groupList = groupList;
+        GroupFragmentAdapter.context = context;
     }
 
     @NonNull
@@ -48,7 +56,48 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupHolder> {
         return groupList.size();
     }
 
+    public static List<Group> getGroupList() {return groupList; }
+
     public void setItems(List<Group> groupList) {
-        this.groupList = groupList;
+        GroupFragmentAdapter.groupList = groupList;
+    }
+
+    class GroupHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final TextView groupName;
+        private final CircleImageView groupImage;
+
+        public GroupHolder(View itemView)
+        {
+            super(itemView);
+            this.groupName = itemView.findViewById(R.id.group_name);
+            this.groupImage = itemView.findViewById(R.id.iv_group_image_base);
+            itemView.setOnClickListener(this);
+        }
+
+        public CircleImageView getGroupImage() {
+            return this.groupImage;
+        }
+
+        public TextView getGroupName() {
+            return this.groupName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            List<Group> groupList = GroupFragmentAdapter.getGroupList();
+            for (Group group: groupList) {
+                String selectedGroupName = this.groupName.getText().toString();
+                if (Objects.equals(group.getName(), selectedGroupName)) {
+                    changeUserToChatActivity(group.getId());
+                }
+            }
+        }
+
+        private void changeUserToChatActivity(String selectedGroupId) {
+            Intent intent = new Intent(GroupFragmentAdapter.context, ChatActivity.class);
+            intent.putExtra("currentGroupId", selectedGroupId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.vneurochka.model;
 import java.util.List;
 
 public class Group {
+    private String id;
     private String name;
     private String description;
     private long creationDate;
@@ -11,11 +12,23 @@ public class Group {
 
     public Group() {}
 
-    public Group(String name, String description, long creationDate, String imageUrl) {
+    public Group(String id, String name, String description, long creationDate, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.creationDate = creationDate;
         this.imageUrl = imageUrl;
+    }
+
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
     public String getName()

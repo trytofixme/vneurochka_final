@@ -2,20 +2,20 @@ package com.example.vneurochka.model;
 
 public class Message
 {
-    private String message, type, from, to;
+    private String message, type, senderId, groupId;
     private long timestamp;
+    private Boolean isSeen;
 
     public Message()
     {
 
     }
 
-    public Message(String message, String type, String from, String to, long timestamp)
+    public Message(String message, String type, String from, String groupId, long timestamp)
     {
         this.message = message;
         this.type = type;
-        this.from = from;
-        this.to = to;
+        this.groupId = groupId;
         this.timestamp = timestamp;
     }
 
@@ -39,24 +39,24 @@ public class Message
         this.type = type;
     }
 
-    public String getFrom()
+    public String getSenderId()
     {
-        return from;
+        return senderId;
     }
 
-    public void setFrom(String from)
+    public void setSenderId(String senderId)
     {
-        this.from = from;
+        this.senderId = senderId;
     }
 
-    public String getTo()
+    public String getGroupId()
     {
-        return to;
+        return groupId;
     }
 
-    public void setTo(String to)
+    public void setGroupId(String groupId)
     {
-        this.to = to;
+        this.groupId = groupId;
     }
 
     public long getTimestamp()
@@ -68,4 +68,8 @@ public class Message
     {
         this.timestamp = timestamp;
     }
+
+    public Boolean getSeen() { return isSeen; }
+
+    public void setSeen(Boolean isSeen) { this.isSeen = isSeen; }
 }

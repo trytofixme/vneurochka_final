@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,10 @@ import java.util.Locale;
 
 public class AuthorizationActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
-    private Button LoginButton, SignUpButton;
+    private Button LoginButton;
     private EditText UserEmail, UserPassword;
     private DatabaseReference UserRef;
+    private TextView RegisterLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +35,7 @@ public class AuthorizationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_authorization);
-        setLanguageForApp("ru");
+        //setLanguageForApp("ru");
 		firebaseAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         initializeControls();
@@ -42,7 +44,7 @@ public class AuthorizationActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        //firebaseAuth.signOut();
+        firebaseAuth.signOut();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             changeUserToHomeActivity();
@@ -54,21 +56,18 @@ public class AuthorizationActivity extends AppCompatActivity {
         UserEmail = findViewById(R.id.et_email_auth);
         UserPassword = findViewById(R.id.et_password_auth);
         LoginButton = findViewById(R.id.btn_login);
-        SignUpButton = findViewById(R.id.btn_login_registration);
+        RegisterLink = findViewById(R.id.tv_register_from_auth);
     }
 
     private void initializeListeners()
     {
+        RegisterLink.setOnClickListener(view -> changeUserToSignUpActivity());
         LoginButton.setOnClickListener(v -> {
             UserEmail.clearFocus();
             UserPassword.clearFocus();
             dismissKeyboard();
 
             tryLoginUser();
-        });
-
-        SignUpButton.setOnClickListener(v -> {
-            changeUserToSignUpActivity();
         });
     }
 

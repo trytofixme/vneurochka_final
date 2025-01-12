@@ -122,7 +122,7 @@ public class GroupsFragment extends Fragment {
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        adapter = new GroupFragmentAdapter(userGroupList);
+        adapter = new GroupFragmentAdapter(userGroupList, this.getContext());
         recyclerView.setAdapter(adapter);
     }
 
