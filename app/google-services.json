@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "228945463050",
-    "project_id": "vneurochka-42cbc",
-    "storage_bucket": "vneurochka-42cbc.firebasestorage.app"
+    "project_number": "559311791527",
+    "project_id": "projc-e3b51",
+    "storage_bucket": "projc-e3b51.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:228945463050:android:bab46dc1a1b5dccd131cf3",
+        "mobilesdk_app_id": "1:559311791527:android:a56ce2a146efc782e4c282",
         "android_client_info": {
           "package_name": "com.example.vneurochka"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD-68XMtVsWoNKkzG5qI1kyi9cphT7Dr_k"
+          "current_key": "AIzaSyAhiZIzyAIXx4AHi4dSZiJt195B3SF7WPI"
         }
       ],
       "services": {
