@@ -1,8 +1,10 @@
 package com.example.vneurochka.view.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,11 +34,11 @@ public class AuthorizationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setLocale(AuthorizationActivity.this, "ru");
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_authorization);
-        //setLanguageForApp("ru");
-		firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         initializeControls();
         initializeListeners();
@@ -44,7 +46,7 @@ public class AuthorizationActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        firebaseAuth.signOut();
+        //firebaseAuth.signOut();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             changeUserToHomeActivity();
@@ -88,28 +90,28 @@ public class AuthorizationActivity extends AppCompatActivity {
         } else {
             UserEmail.setClickable(false);
             UserPassword.setClickable(false);
-        }
 
-        firebaseAuth.signInWithEmailAndPassword(mailText, passwordText).addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-            {
-                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(deviceToken -> {
-                    if (deviceToken.isSuccessful() && deviceToken.getResult() != null) {
-                        UserRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(userTask -> {
-                            if(userTask.isSuccessful()) {
-                                changeUserToHomeActivity();
-                                Toast.makeText(AuthorizationActivity.this, "??????????? ?????? ???????...", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                String message = task.getException().toString();
-                Toast.makeText(AuthorizationActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
-            }
-        });
+            firebaseAuth.signInWithEmailAndPassword(mailText, passwordText).addOnCompleteListener(task -> {
+                if(task.isSuccessful())
+                {
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(deviceToken -> {
+                        if (deviceToken.isSuccessful() && deviceToken.getResult() != null) {
+                            UserRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(userTask -> {
+                                if(userTask.isSuccessful()) {
+                                    changeUserToHomeActivity();
+                                    Toast.makeText(AuthorizationActivity.this, "??????????? ?????? ???????...", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    String message = task.getException().toString();
+                    Toast.makeText(AuthorizationActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void changeUserToHomeActivity() {
@@ -131,18 +133,12 @@ public class AuthorizationActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 
-    private void setLanguageForApp(String languageToLoad){
-        Locale locale;
-        if (languageToLoad.equals("not-set")) {
-            locale = Locale.getDefault();
-        }
-        else {
-            locale = new Locale(languageToLoad);
-        }
+    public static void setLocale(Activity activity, String languageCode) {
+        Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 }

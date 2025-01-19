@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageHolder> {
+public class MessageFragmentAdapter extends RecyclerView.Adapter<MessageFragmentAdapter.MessageHolder> {
 
     private static final int MSG_TYPE_LEFT_RECEIVED = 0;
     private static final int MSG_TYPE_RIGHT_RECEIVED = 1;
@@ -28,7 +28,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     private String senderId;
 
 
-    public MessageAdapter(ArrayList<Message> messageArrayList, Context context) {
+    public MessageFragmentAdapter(ArrayList<Message> messageArrayList, Context context) {
         this.messageArrayList = messageArrayList;
         this.context = context;
     }

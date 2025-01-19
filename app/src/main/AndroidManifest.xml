@@ -32,7 +32,7 @@
             android:exported="false"/>
 
         <activity
-            android:name=".view.ui.ChatActivity"
+            android:name=".view.ui.MessageActivity"
             android:exported="false"/>
 
         <meta-data

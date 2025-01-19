@@ -2,6 +2,7 @@ package com.example.vneurochka.view.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;

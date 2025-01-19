@@ -12,27 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vneurochka.R;
 import com.example.vneurochka.model.Group;
-import com.example.vneurochka.view.ui.ChatActivity;
+import com.example.vneurochka.view.ui.MessageActivity;
 
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdapter.GroupHolder> {
-    private static List<Group> groupList;
-    private static Context context;
+    private List<Group> groupList;
+    private final Context context;
 
     public GroupFragmentAdapter(List<Group> groupList, Context context) {
-        GroupFragmentAdapter.groupList = groupList;
-        GroupFragmentAdapter.context = context;
+        this.groupList = groupList;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public GroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.group_view, parent, false);
+                .inflate(R.layout.group_list_item_view, parent, false);
 
         return new GroupHolder(view);
     }
@@ -49,6 +48,13 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
         {
             holder.getGroupImage().setImageResource(R.drawable.sample_img);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MessageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("currentGroupId", currentGroup.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -56,13 +62,11 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
         return groupList.size();
     }
 
-    public static List<Group> getGroupList() {return groupList; }
-
     public void setItems(List<Group> groupList) {
-        GroupFragmentAdapter.groupList = groupList;
+        this.groupList = groupList;
     }
 
-    class GroupHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class GroupHolder extends RecyclerView.ViewHolder {
         private final TextView groupName;
         private final CircleImageView groupImage;
 
@@ -71,7 +75,6 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
             super(itemView);
             this.groupName = itemView.findViewById(R.id.group_name);
             this.groupImage = itemView.findViewById(R.id.iv_group_image_base);
-            itemView.setOnClickListener(this);
         }
 
         public CircleImageView getGroupImage() {
@@ -80,24 +83,6 @@ public class GroupFragmentAdapter extends RecyclerView.Adapter<GroupFragmentAdap
 
         public TextView getGroupName() {
             return this.groupName;
-        }
-
-        @Override
-        public void onClick(View view) {
-            List<Group> groupList = GroupFragmentAdapter.getGroupList();
-            for (Group group: groupList) {
-                String selectedGroupName = this.groupName.getText().toString();
-                if (Objects.equals(group.getName(), selectedGroupName)) {
-                    changeUserToChatActivity(group.getId());
-                }
-            }
-        }
-
-        private void changeUserToChatActivity(String selectedGroupId) {
-            Intent intent = new Intent(GroupFragmentAdapter.context, ChatActivity.class);
-            intent.putExtra("currentGroupId", selectedGroupId);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
         }
     }
 }

@@ -114,5 +114,4 @@ public class UserFragmentAdapter extends RecyclerView.Adapter<UserFragmentAdapte
             iv_status_user_list = itemView.findViewById(R.id.iv_status_user_list);
         }
     }
-
 }

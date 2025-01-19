@@ -2,24 +2,18 @@ package com.example.vneurochka.view.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.vneurochka.R;
 import com.example.vneurochka.model.Message;
-import com.example.vneurochka.model.User;
-import com.example.vneurochka.view.adapters.MessageAdapter;
-import com.example.vneurochka.view.adapters.UserFragmentAdapter;
-import com.example.vneurochka.viewModel.DatabaseViewModel;
+import com.example.vneurochka.view.adapters.MessageFragmentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,20 +23,19 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ChatActivity extends AppCompatActivity {
-    private UserFragmentAdapter userAdapter;
-    private ArrayList<User> mUsers;
+public class MessageActivity extends AppCompatActivity {
     private String currentUserId;
-    private ArrayList<Message> messageArrayList;
-    private ArrayList<Message> currentChatMessages;
+    private ArrayList<Message> messageArrayList = new ArrayList<>();
+    private ArrayList<Message> currentChatMessages = new ArrayList<>();
     RelativeLayout relative_layout_chat_fragment;
     private String currentGroupId;
-    private MessageAdapter adapter;
+    private MessageFragmentAdapter adapter;
 
-    public ChatActivity() {
+    public MessageActivity() {
 
     }
 
@@ -50,11 +43,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authorization);
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            currentGroupId = extras.getString("currentGroupId");
-        }
+        setContentView(R.layout.activity_message);
+        currentGroupId = getIntent().getStringExtra("currentGroupId");
 
         initComponents();
         initChatData();
@@ -75,7 +65,7 @@ public class ChatActivity extends AppCompatActivity {
                         return;
                     }
 
-                    messageArrayList = (ArrayList<Message>) messageHashMap.values();
+                    messageArrayList = new ArrayList<>(messageHashMap.values());
                     for (Message message: messageArrayList) {
                         if (Objects.equals(message.getGroupId(), currentGroupId)) {
                             currentChatMessages.add(message);
@@ -94,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        relative_layout_chat_fragment = this.findViewById(R.id.relative_layout_chat_fragment);
+        relative_layout_chat_fragment = findViewById(R.id.relative_layout_chat_fragment);
     }
 
     private void setupRecycleView() {
@@ -102,14 +92,14 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
 
-        final RecyclerView recyclerView = this.findViewById(R.id.recycler_view_chat_fragment);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_messages_record);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        adapter = new MessageAdapter(currentChatMessages, this);
+        adapter = new MessageFragmentAdapter(currentChatMessages, this);
         recyclerView.setAdapter(adapter);
     }
 }

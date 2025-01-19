@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vneurochka.R;
 import com.example.vneurochka.model.Group;
 import com.example.vneurochka.view.adapters.GroupFragmentAdapter;
-import com.example.vneurochka.viewModel.DatabaseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +33,6 @@ import java.util.List;
 
 public class GroupsFragment extends Fragment {
     private GroupFragmentAdapter adapter;
-    private DatabaseViewModel databaseViewModel;
     private List<Group> userGroupList = new ArrayList<>();
     private Collection<Group> groupList = new ArrayList<>();
 
@@ -71,8 +70,6 @@ public class GroupsFragment extends Fragment {
                     et_search.setText("");
             }
         });
-
-        //et_search.setOnClickListener(view1 -> searchGroups(""));
     }
 
     private void initUserGroups() {
@@ -101,6 +98,13 @@ public class GroupsFragment extends Fragment {
 
                     adapter.setItems(userGroupList);
                     adapter.notifyDataSetChanged();
+
+                    ImageView groupChatImage = getView().findViewById(R.id.iv_group_fragment_empty);
+                    if (userGroupList.isEmpty()){
+                        groupChatImage.setVisibility(View.VISIBLE);
+                    } else {
+                        groupChatImage.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override

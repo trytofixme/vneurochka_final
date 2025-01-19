@@ -120,36 +120,36 @@ public class SignUpActivity extends AppCompatActivity {
             UserPassword.setClickable(false);
             UserRepeatPassword.setClickable(false);
             dismissKeyboard();
+
+            mAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(task -> {
+                if(task.isSuccessful())
+                {
+                    String currentUserId = mAuth.getCurrentUser().getUid();
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", UserLogin.getText().toString());
+                    map.put("status", "online");
+                    map.put("imageUrl", "default");
+
+                    UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
+                        if(onCompleteTask.isSuccessful()) {
+                            changeUserToHomeActivity();
+                            Toast.makeText(SignUpActivity.this, "??????? ??????", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            String message = onCompleteTask.getException().toString();
+                            Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                {
+                    String message = task.getException().toString();
+                    Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-
-        mAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-            {
-                String currentUserId = mAuth.getCurrentUser().getUid();
-
-                Map<String, Object> map = new HashMap<>();
-                map.put("name", UserLogin.getText().toString());
-                map.put("status", "online");
-                map.put("imageUrl", "default");
-
-                UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
-                    if(onCompleteTask.isSuccessful()) {
-                        changeUserToHomeActivity();
-                        Toast.makeText(SignUpActivity.this, "??????? ??????", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        String message = onCompleteTask.getException().toString();
-                        Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            else
-            {
-                String message = task.getException().toString();
-                Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void dismissKeyboard()
