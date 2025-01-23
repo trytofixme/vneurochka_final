@@ -79,13 +79,13 @@ public class AuthorizationActivity extends AppCompatActivity {
         String passwordText = UserPassword.getText().toString();
 
         if ((mailText.isEmpty() && passwordText.isEmpty())) {
-            Toast.makeText(AuthorizationActivity.this, "????? ? ?????? ?????? ???? ?????????!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AuthorizationActivity.this, "Почта и пароль должны быть заполнены!", Toast.LENGTH_SHORT).show();
             UserEmail.requestFocus();
         } else if (mailText.isEmpty()) {
-            UserEmail.setError("??????????, ??????? ??? email.");
+            UserEmail.setError("Пожалуйста, введите ваш email.");
             UserEmail.requestFocus();
         } else if (passwordText.isEmpty()) {
-            UserPassword.setError("??????????, ??????? ??? ??????.");
+            UserPassword.setError("Пожалуйста, введите ваш пароль.");
             UserPassword.requestFocus();
         } else {
             UserEmail.setClickable(false);
@@ -112,6 +112,27 @@ public class AuthorizationActivity extends AppCompatActivity {
                 }
             });
         }
+
+        firebaseAuth.signInWithEmailAndPassword(mailText, passwordText).addOnCompleteListener(task -> {
+            if(task.isSuccessful())
+            {
+                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(deviceToken -> {
+                    if (deviceToken.isSuccessful() && deviceToken.getResult() != null) {
+                        UserRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(userTask -> {
+                            if(userTask.isSuccessful()) {
+                                changeUserToHomeActivity();
+                                Toast.makeText(AuthorizationActivity.this, "Авторизация прошла успешно...", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                String message = task.getException().toString();
+                Toast.makeText(AuthorizationActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void changeUserToHomeActivity() {

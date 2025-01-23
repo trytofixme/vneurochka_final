@@ -75,42 +75,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (emailText.isEmpty() && loginText.isEmpty() && passwordText.isEmpty() && repeatPasswordText.isEmpty())
         {
-            Toast.makeText(SignUpActivity.this, "??? ???? ?????? ???? ?????????!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, getText(R.string.no_fills), Toast.LENGTH_SHORT).show();
             UserEmail.requestFocus();
         } else if (emailText.isEmpty())
         {
-            UserEmail.setError("??????????, ??????? ??? email.");
+            UserEmail.setError(getText(R.string.no_email_reg));
             UserEmail.requestFocus();
         } else if (passwordText.isEmpty())
         {
-            UserPassword.setError("??????????, ??????? ??? ??????.");
+            UserPassword.setError(getText(R.string.no_ps_reg));
             UserPassword.requestFocus();
         }
-        // ????????? ?????
+        // Валидация почты
         else if (Character.isDigit(emailText.charAt(0)))
         {
-            UserEmail.setError("????? ?? ????? ?????????? ? ?????.");
+            UserEmail.setError(getText(R.string.dig_email));
             UserEmail.requestFocus();
         }
         else if (emailText.length() < 4)
         {
-            UserEmail.setError("????? ????? ?????? ???? ?? 5 ????????.");
+            UserEmail.setError(getText(R.string.len_email));
             UserEmail.requestFocus();
         }
-        // ????????? ??????
+        // Валидация пароля
         else if (Character.isDigit(passwordText.charAt(0)))
         {
-            UserPassword.setError("?????? ?? ????? ?????????? ? ?????.");
+            UserPassword.setError(getText(R.string.dig_ps));
             UserPassword.requestFocus();
         }
         else if (passwordText.length() < 7)
         {
-            UserPassword.setError("????? ?????? ?????? ???? ?? 8 ????????.");
+            UserPassword.setError(getText(R.string.len_ps));
             UserPassword.requestFocus();
         }
         else if (!passwordText.equals(repeatPasswordText))
         {
-            UserPassword.setError("?????? ?? ?????????!");
+            UserPassword.setError(getText(R.string.ps_no_mch));
             UserPassword.requestFocus();
         }
         else
@@ -131,25 +131,24 @@ public class SignUpActivity extends AppCompatActivity {
                     map.put("status", "online");
                     map.put("imageUrl", "default");
 
-                    UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
-                        if(onCompleteTask.isSuccessful()) {
-                            changeUserToHomeActivity();
-                            Toast.makeText(SignUpActivity.this, "??????? ??????", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            String message = onCompleteTask.getException().toString();
-                            Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else
-                {
-                    String message = task.getException().toString();
-                    Toast.makeText(SignUpActivity.this, "?????? : " + message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+                UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
+                    if(onCompleteTask.isSuccessful()) {
+                        changeUserToHomeActivity();
+                        Toast.makeText(SignUpActivity.this, getText(R.string.acc_done), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        String message = onCompleteTask.getException().toString();
+                        Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else
+            {
+                String message = task.getException().toString();
+                Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void dismissKeyboard()

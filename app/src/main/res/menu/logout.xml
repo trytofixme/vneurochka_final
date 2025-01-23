@@ -4,7 +4,14 @@
 
     <item
         android:id="@+id/log_out_home"
-        android:title="Выйти из аккаунта"
+        android:title="@string/logout"
+        >
+
+    </item>
+
+    <item
+        android:id="@+id/change_ps"
+        android:title="@string/ch_ps"
         >
 
     </item>

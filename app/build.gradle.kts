@@ -54,7 +54,6 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.core)
     implementation(libs.circleimageview)
-
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 

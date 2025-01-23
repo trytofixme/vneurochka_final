@@ -73,6 +73,12 @@
                 app:tabSelectedTextColor="@color/black"
                 app:tabTextColor="#A5A5AE"
                 android:contentDescription="Enter How Much Cookies You Want"/>
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/plus" />
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
