@@ -112,27 +112,6 @@ public class AuthorizationActivity extends AppCompatActivity {
                 }
             });
         }
-
-        firebaseAuth.signInWithEmailAndPassword(mailText, passwordText).addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-            {
-                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(deviceToken -> {
-                    if (deviceToken.isSuccessful() && deviceToken.getResult() != null) {
-                        UserRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(userTask -> {
-                            if(userTask.isSuccessful()) {
-                                changeUserToHomeActivity();
-                                Toast.makeText(AuthorizationActivity.this, "Авторизация прошла успешно...", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                String message = task.getException().toString();
-                Toast.makeText(AuthorizationActivity.this, "Ошибка : " + message, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void changeUserToHomeActivity() {

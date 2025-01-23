@@ -69,10 +69,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:contentDescription="Enter How Much Cookies You Want"
                 app:tabIndicatorColor="@color/black"
                 app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="#A5A5AE"
-                android:contentDescription="Enter How Much Cookies You Want"/>
+                app:tabTextColor="#A5A5AE" />
 
             <ImageView
                 android:id="@+id/imageView3"

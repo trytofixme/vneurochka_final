@@ -66,55 +66,41 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    public void trySignUp()
-    {
+    public void trySignUp() {
         String emailText = UserEmail.getText().toString();
         String loginText = UserLogin.getText().toString();
         String passwordText = UserPassword.getText().toString();
         String repeatPasswordText = UserRepeatPassword.getText().toString();
 
-        if (emailText.isEmpty() && loginText.isEmpty() && passwordText.isEmpty() && repeatPasswordText.isEmpty())
-        {
+        if (emailText.isEmpty() && loginText.isEmpty() && passwordText.isEmpty() && repeatPasswordText.isEmpty()) {
             Toast.makeText(SignUpActivity.this, getText(R.string.no_fills), Toast.LENGTH_SHORT).show();
             UserEmail.requestFocus();
-        } else if (emailText.isEmpty())
-        {
+        } else if (emailText.isEmpty()) {
             UserEmail.setError(getText(R.string.no_email_reg));
             UserEmail.requestFocus();
-        } else if (passwordText.isEmpty())
-        {
+        } else if (passwordText.isEmpty()) {
             UserPassword.setError(getText(R.string.no_ps_reg));
             UserPassword.requestFocus();
         }
         // Валидация почты
-        else if (Character.isDigit(emailText.charAt(0)))
-        {
+        else if (Character.isDigit(emailText.charAt(0))) {
             UserEmail.setError(getText(R.string.dig_email));
             UserEmail.requestFocus();
-        }
-        else if (emailText.length() < 4)
-        {
+        } else if (emailText.length() < 4) {
             UserEmail.setError(getText(R.string.len_email));
             UserEmail.requestFocus();
         }
         // Валидация пароля
-        else if (Character.isDigit(passwordText.charAt(0)))
-        {
+        else if (Character.isDigit(passwordText.charAt(0))) {
             UserPassword.setError(getText(R.string.dig_ps));
             UserPassword.requestFocus();
-        }
-        else if (passwordText.length() < 7)
-        {
+        } else if (passwordText.length() < 7) {
             UserPassword.setError(getText(R.string.len_ps));
             UserPassword.requestFocus();
-        }
-        else if (!passwordText.equals(repeatPasswordText))
-        {
+        } else if (!passwordText.equals(repeatPasswordText)) {
             UserPassword.setError(getText(R.string.ps_no_mch));
             UserPassword.requestFocus();
-        }
-        else
-        {
+        } else {
             UserEmail.setClickable(false);
             UserLogin.setClickable(false);
             UserPassword.setClickable(false);
@@ -122,8 +108,7 @@ public class SignUpActivity extends AppCompatActivity {
             dismissKeyboard();
 
             mAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(task -> {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     String currentUserId = mAuth.getCurrentUser().getUid();
 
                     Map<String, Object> map = new HashMap<>();
@@ -131,24 +116,21 @@ public class SignUpActivity extends AppCompatActivity {
                     map.put("status", "online");
                     map.put("imageUrl", "default");
 
-                UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
-                    if(onCompleteTask.isSuccessful()) {
-                        changeUserToHomeActivity();
-                        Toast.makeText(SignUpActivity.this, getText(R.string.acc_done), Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        String message = onCompleteTask.getException().toString();
-                        Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            else
-            {
-                String message = task.getException().toString();
-                Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
-            }
-        });
+                    UsersRef.child(currentUserId).setValue(map).addOnCompleteListener(onCompleteTask -> {
+                        if (onCompleteTask.isSuccessful()) {
+                            changeUserToHomeActivity();
+                            Toast.makeText(SignUpActivity.this, getText(R.string.acc_done), Toast.LENGTH_SHORT).show();
+                        } else {
+                            String message = onCompleteTask.getException().toString();
+                            Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    String message = task.getException().toString();
+                    Toast.makeText(SignUpActivity.this, getText(R.string.error) + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void dismissKeyboard()
