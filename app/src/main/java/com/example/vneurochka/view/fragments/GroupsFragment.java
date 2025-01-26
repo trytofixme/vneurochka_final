@@ -45,6 +45,7 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initUserGroups();
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
+        // add_user_button = ...
         setupRecycleView(view);
         initSearchBar(view);
 

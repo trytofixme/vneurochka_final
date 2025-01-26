@@ -153,7 +153,12 @@ public class HomeActivity extends AppCompatActivity {
                 // РЕАЛИЗОВАТЬ ВЫХОД ИЗ АККАУНТА
                 Toast.makeText(HomeActivity.this, "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
                 return true;
-            } else {
+            } else if (item.getItemId() == R.id.change_ps) {
+                // РЕАЛИЗОВАТЬ СБРОС ПАРОЛЯ
+                Toast.makeText(HomeActivity.this, "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else {
                 return false;
             }
         });
