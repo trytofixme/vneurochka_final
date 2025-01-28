@@ -1,7 +1,9 @@
 package com.example.vneurochka.view.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -23,9 +25,9 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MessageActivity extends AppCompatActivity {
     private String currentUserId;
@@ -34,6 +36,7 @@ public class MessageActivity extends AppCompatActivity {
     RelativeLayout relative_layout_chat_fragment;
     private String currentGroupId;
     private MessageFragmentAdapter adapter;
+    private ImageView sendButton;
 
     public MessageActivity() {
 
@@ -52,13 +55,14 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void initChatData() {
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference groupsDatabase = FirebaseDatabase.getInstance().getReference("Messages");
         groupsDatabase.addValueEventListener(
             new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     messageArrayList.clear();
+                    currentChatMessages.clear();
                     GenericTypeIndicator<HashMap<String, Message>> indicatorMessages = new GenericTypeIndicator<HashMap<String, Message>>() {};
                     HashMap<String, Message> messageHashMap = snapshot.getValue(indicatorMessages);
                     if (messageHashMap == null) {
@@ -81,10 +85,48 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
             });
+
+        // TODO: Разобраться с компаратор и понять как отсортировать сообщения
+        // по полю timestamp
+        // currentChatMessages.sort();
     }
 
     private void initComponents() {
         relative_layout_chat_fragment = findViewById(R.id.relative_layout_chat_fragment);
+
+        EditText editMessage = findViewById(R.id.et_chat);
+
+        ImageView backButton = findViewById(R.id.iv_back_button);
+        backButton.setOnClickListener(view -> {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+        });
+
+        ImageView sendButton = findViewById(R.id.iv_send_button);
+        sendButton.setOnClickListener(view -> {
+            String messageText = editMessage.getText().toString();
+            if (messageText.isEmpty()) {
+                return;
+            }
+
+            long timestamp = System.currentTimeMillis();
+            DatabaseReference messagesDatabase = FirebaseDatabase.getInstance().getReference("Messages");
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("groupId", currentGroupId);
+            hashMap.put("message", messageText);
+            hashMap.put("senderId", currentUserId);
+            hashMap.put("timestamp", timestamp);
+
+            // TODO: Разобраться как очистить введеный текст в editMessage
+            AtomicReference<Boolean> isMessageAdded = new AtomicReference<>(Boolean.FALSE);
+            messagesDatabase.push().setValue(hashMap).addOnCompleteListener(task -> isMessageAdded.set(true));
+            if (isMessageAdded.get()) {
+                editMessage.clearFocus();
+                editMessage.getText().clear();
+                editMessage.setText("");
+            }
+        });
     }
 
     private void setupRecycleView() {

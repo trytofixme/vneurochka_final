@@ -102,7 +102,7 @@
             android:hint="Введите сообщение"
             android:inputType="textLongMessage"
             android:padding="6dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textColorHint="#AAA1A1"
             android:textCursorDrawable="@color/white"
             android:textSize="18sp" />
