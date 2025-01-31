@@ -1,61 +1,80 @@
 package com.example.vneurochka.view.fragments;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.vneurochka.R;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.drive.events.CompletionListener;
+import com.google.firebase.Firebase;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class GroupCreationFragment extends Fragment {
-    private Button btn;
+public class GroupCreationFragment extends DialogFragment {
     private Button btn1;
-    // Инициализровать остальные поля объектами
+    private EditText groupName;
+    private EditText groupDesk;
+    public static String TAG = "123";
 
-
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group_creation, container, false);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_group_creation, new ConstraintLayout(getActivity()), false);
         initComponents(view);
         initListeners();
-
-        return view;
+        Dialog builder = new Dialog(getActivity());
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        builder.setContentView(view);
+        builder.setTitle(TAG);
+        return builder;
     }
 
     private void initListeners() {
-        btn.setOnClickListener(view -> {
-            // Как открыть диалоговый фрагмент из фрагмента по нажатию на кнопку?
-        });
-
         btn1.setOnClickListener(view -> {
-            // 1. Добавить группу в базу данных
-            // Считать данные с введенных полей
-            // Провалидировать данные (непустое имя группы, > 0 участников)
+            String groupNameText = groupName.getText().toString();
+            String groupDeskText = groupDesk.getText().toString();
+            //Сделать валидацию про количество участников группы
+            if (groupNameText.isEmpty()) {
+//                Toast.makeText(view, getText(R.string.group_name_empty), Toast.LENGTH_SHORT).show();
+//                groupName.requestFocus();
+            } else {
 
-            DatabaseReference groupsDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-            HashMap<String, String> hashMap = new HashMap<>();
-            // hashMap.put("id", userId); для каждого поля из таблицы Groups
-            // Firebase add new object
-//            groupsDatabase.addValueEventListener(task -> {
-//
-//            });
-            // 2. Закрыть окно создания группы
+                long timestamp = System.currentTimeMillis();
+
+                DatabaseReference groupsDatabase = FirebaseDatabase.getInstance().getReference("Groups");
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("name", groupNameText);
+                hashMap.put("description", groupDeskText);
+                hashMap.put("imageURL", "default");
+                hashMap.put("creationDate", timestamp);
+                //hashMap.put("userIds", null);
+                AtomicReference<Boolean> isGroupAdded = new AtomicReference<>(Boolean.FALSE);
+                groupsDatabase.push().setValue(hashMap);
+                getDialog().dismiss();
+            }
         });
     }
 
     private void initComponents(View view) {
-        btn = view.findViewById(R.id.btn_add_user);
-        // Привязать остальные объекты к представлениям
+        btn1 = view.findViewById(R.id.btn_new_group);
+        groupName = view.findViewById(R.id.group_name);
+        groupDesk = view.findViewById(R.id.group_desc);
     }
 }

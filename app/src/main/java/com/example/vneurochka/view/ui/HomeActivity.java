@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
+    private FirebaseAuth firebaseHome;
     private Toolbar toolbar;
     private LinearLayout linearLayout;
     private ProgressBar progressBar;
@@ -54,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        firebaseHome = FirebaseAuth.getInstance();
         initControls();
         initListeners();
         onOptionMenuClicked();
@@ -150,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.logout);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.log_out_home) {
-                // РЕАЛИЗОВАТЬ ВЫХОД ИЗ АККАУНТА
+                firebaseHome.signOut();
                 Toast.makeText(HomeActivity.this, "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (item.getItemId() == R.id.change_ps) {

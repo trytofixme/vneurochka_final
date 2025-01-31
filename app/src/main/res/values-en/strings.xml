@@ -7,6 +7,7 @@
     <string name="no_email_auth">Please fill in your e-mail</string>
     <string name="no_fills">Fields are empty!</string>
     <string name="no_ps_auth">Please fill in your password</string>
+    <string name="group_name_empty">Please fill in group name</string>
     <string name="app_name">Vneurochka</string>
     <string name="reg_btn">SIGN UP</string>
     <string name="reg_login">Imagine login</string>
@@ -25,6 +26,8 @@
     <string name="registration">Registration</string>
     <string name="profile">Profile of user</string>
     <string name="search">Search</string>
+    <string name="logout">Logout</string>
+    <string name="ch_ps">Reset password</string>
     <string name="no_login_reg">Please imagine login</string>
     <string name="no_email_reg">Please fill in your email</string>
     <string name="no_ps_reg">Please imagine password</string>

@@ -16,6 +16,7 @@
     <string name="acc_done">Аккаунт создан</string>
     <string name="error">Ошибка : </string>
     <string name="no_ps_auth">Пожалуйста, введите ваш пароль.</string>
+    <string name="group_name_empty">Пожалуйста, введите имя группы</string>
     <string name="app_name">Внеурочка</string>
     <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="reg_login">Придумайте логин</string>
@@ -34,5 +35,7 @@
     <string name="registration">Регистрация</string>
     <string name="profile">Профиль пользователя</string>
     <string name="search">Поиск</string>
+    <string name="ch_ps">Сбросить пароль</string>
     <string name="no_login_reg">Пожалуйста придумайте логин</string>
+    <string name="logout">Выйти из аккаунта</string>
 </resources>

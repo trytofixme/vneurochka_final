@@ -23,6 +23,7 @@ firebaseStorage = "21.0.1"
 googleGmsGoogleServices = "4.4.2"
 supportV13 = "28.0.0"
 utilsV13 = "1.7.0"
+playServicesDrive = "17.0.0"
 
 [libraries]
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
@@ -48,6 +49,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 smarttablayout-utils-v13 = { module = "com.ogaclejapan.smarttablayout:utils-v13", version.ref = "utilsV13" }
 support-v13 = { module = "com.android.support:support-v13", version.ref = "supportV13" }
 utils-v4 = { module = "com.ogaclejapan.smarttablayout:utils-v4", version.ref = "library" }
+play-services-drive = { group = "com.google.android.gms", name = "play-services-drive", version.ref = "playServicesDrive" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

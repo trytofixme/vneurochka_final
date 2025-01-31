@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class GroupsFragment extends Fragment {
+    private CircleImageView btnNewGroup;
     private GroupFragmentAdapter adapter;
     private List<Group> userGroupList = new ArrayList<>();
     private Collection<Group> groupList = new ArrayList<>();
@@ -45,11 +49,22 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initUserGroups();
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
-        // add_user_button = ...
+        initComponents(view);
         setupRecycleView(view);
         initSearchBar(view);
 
         return view;
+    }
+
+    private void initComponents(View view) {
+        btnNewGroup = view.findViewById(R.id.new_group);
+        btnNewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new GroupCreationFragment().show(
+                        getChildFragmentManager(), "123");
+            }
+        });
     }
 
     private void initSearchBar(View view) {
